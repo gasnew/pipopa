@@ -1,10 +1,7 @@
-var http = require('http'),
-		serveStatic = require('serve-static'),  
-	  finalhandler = require('finalhandler');
+var forever = require('forever-monitor');
 
-var serve = serveStatic('./');
-
-http.createServer((request, response) => {
-	serve(request, response, finalhandler(request, response));
-}).listen(8080);
+var child = forever.start([ 'node server.js' ], {
+	max : 2,
+	watchDirectory : './assets'
+});
 
