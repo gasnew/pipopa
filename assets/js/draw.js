@@ -1,35 +1,37 @@
-var draw = {
-	TILE_WIDTH : 16,
-	TILE_HEIGHT : 16,
+game.canvas.draw = {
+	TILE_SIZE : 16,
 
-	canvas : document.createElement('canvas'),
-
-	init : function () {
-		this.canvas.width = 640;
-		this.canvas.height = 480;
-		this.context = this.canvas.getContext('2d');
-		document.body.insertBefore(this.canvas, document.body.childNodes[0]);
-
-		this.context.fillRect(0, 0, 30, 30);
+	init : function (context) {
+    this.context = context;
 	},
 
-	land : function () {
-		var b = land.blocks;
+	land : function (blocks) {
+    var b = blocks;
 		for (var i = 0; i < b.length; i++) {
 			var r = b[i];
 			for (var j = 0; j < r.length; j++) {
-				this._tile({x : j, y : i});
+				this._tile(r[j]);
 			}
 		}
 	},
 	
-	_tile : function (
-		{ x = 0, y = 0 }) {
+	_tile : function (tile) {
 		ctx = this.context;
 
-		var tw = this.TILE_WIDTH;
-		var th = this.TILE_HEIGHT;
-		ctx.fillRect(x * tw, y * th, tw, th);
+		var ts = this.TILE_SIZE;
+    var t = tile;
+    var x = t.x;
+    var y = t.y;
+    var d = () => ctx.fillRect(x * ts, y * ts, ts, ts);
+
+    if (tile.highlighted) {
+      var style = ctx.fillStyle;
+      ctx.fillStyle = 'white';
+      d();
+      ctx.fillStyle = style;
+    } else {
+      d();
+    }
 	}
 };
 

@@ -1,4 +1,4 @@
-var land = {
+game.land = {
 	blocks : [],
 
 	init : function (rows, cols) {
@@ -7,7 +7,8 @@ var land = {
 		for (var i = 0; i < rows; i++) {
 			this.blocks[i] = Array(cols);
 			for (var j = 0; j < cols; j++) {
-				this.blocks[i][j] = 1;
+        var new_b = Object.create(game.Tile);
+				this.blocks[i][j] = new_b.init(j, i);
 			}
 		}
 	},
