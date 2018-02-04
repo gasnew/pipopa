@@ -1,9 +1,9 @@
 var game = {
-	init : () => {
+  init : () => {
     game.land.init(50, 50);
     game.hud.init(game.land, game.canvas.cursor);
-		game.canvas.init();
-	},
+    game.canvas.init();
+  },
 
   update : () => {
     game.canvas.reset();

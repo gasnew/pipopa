@@ -4,13 +4,13 @@ game.canvas = {
     y : 0
   },
 
-	canvas : document.createElement('canvas'),
+  canvas : document.createElement('canvas'),
 
   init : function() {
-		this.canvas.width = 640;
-		this.canvas.height = 480;
-		this.context = this.canvas.getContext('2d');
-		document.body.insertBefore(this.canvas, document.body.childNodes[0]);
+    this.canvas.width = 640;
+    this.canvas.height = 480;
+    this.context = this.canvas.getContext('2d');
+    document.body.insertBefore(this.canvas, document.body.childNodes[0]);
 
     var that = this;
     this.canvas.addEventListener('mousemove', (e) => {

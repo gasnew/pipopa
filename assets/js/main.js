@@ -1,7 +1,7 @@
 //THE START OF MY GAME SO EXCITING
 
 (() => {
-	game.init();
+  game.init();
 
   window.setInterval(function() {
     game.update();
