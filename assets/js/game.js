@@ -1,16 +1,18 @@
 var game = {
   init : () => {
     game.land.init(50, 50);
-    game.hud.init(game.land, game.canvas.cursor);
-    game.canvas.init();
+    game.entities.init(game.land);
+    game.hud.init(game.land, game.entities, game.draw.canvas.cursor);
+    game.draw.init();
   },
 
   update : () => {
-    game.canvas.reset();
+    game.draw.reset();
 
     game.hud.update();
 
-    game.canvas.draw.land(game.land.blocks);
-  }
+    game.draw.land(game.land.blocks);
+    game.draw.entities.player(game.entities.player);
+  },
 };
 

@@ -1,11 +1,16 @@
-game.canvas.draw = {
+game.draw = {
   TILE_SIZE : 16,
 
-  init : function (context) {
-    this.context = context;
+  init : function() {
+    this.context = this.canvas.init();
+    this.entities.init((tile, color) => this._tile(tile, color));
   },
 
-  land : function (blocks) {
+  reset : function() {
+    this.canvas.reset();
+  },
+
+  land : function(blocks) {
     var b = blocks;
     for (var i = 0; i < b.length; i++) {
       var r = b[i];
@@ -15,22 +20,23 @@ game.canvas.draw = {
     }
   },
 
-  _tile : function (tile) {
+  _tile : function(tile, color = 'green') {
     ctx = this.context;
 
     var ts = this.TILE_SIZE;
     var t = tile;
     var x = t.x;
     var y = t.y;
-    var d = () => ctx.fillRect(x * ts, y * ts, ts, ts);
+    var draw = () => ctx.fillRect(x * ts, y * ts, ts, ts);
 
     if (tile.highlighted) {
       var style = ctx.fillStyle;
       ctx.fillStyle = 'white';
-      d();
+      draw();
       ctx.fillStyle = style;
     } else {
-      d();
+      ctx.fillStyle = color;
+      draw();
     }
 	}
 };

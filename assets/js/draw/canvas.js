@@ -1,4 +1,4 @@
-game.canvas = {
+game.draw.canvas = {
   cursor : {
     x : 0,
     y : 0
@@ -7,8 +7,8 @@ game.canvas = {
   canvas : document.createElement('canvas'),
 
   init : function() {
-    this.canvas.width = 640;
-    this.canvas.height = 480;
+    this.canvas.width = 1000;
+    this.canvas.height = 1000;
     this.context = this.canvas.getContext('2d');
     document.body.insertBefore(this.canvas, document.body.childNodes[0]);
 
@@ -18,15 +18,16 @@ game.canvas = {
       this.cursor.y = e.clientY;
     });
 
-    game.canvas.draw.init(this.context);
-
     this.reset();
+
+    return this.context;
   },
 
-  reset : function () {
+  reset : function() {
     var ctx = this.context;
 
     ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     ctx.fillStyle = 'green';
-  }
+  },
 };
+
