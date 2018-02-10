@@ -4,19 +4,19 @@ game.hud = {
     this.entities = entities;
     this.cursor = cursor;
 
-    console.log(cursor);
-    this.highBlocks = null;
+    this.highBlock = null;
+    this.downBlock = null;
   },
 
   update : function() {
     this.highlightBlock();
+    var clickedBlock = this.getClickedBlock();
+    if (clickedBlock) console.log(clickedBlock);
   },
 
   highlightBlock : function() {
-    var c = this.cursor;
-    var s = game.draw.TILE_SIZE;
-    var row = Math.floor(c.y / s);
-    var col = Math.floor(c.x / s);
+    var row = this.cursor.row;
+    var col = this.cursor.column;
     var b = this.land.blocks;
 
     if (this.highBlock) this.highBlock.unhighlight();
@@ -24,6 +24,23 @@ game.hud = {
       this.highBlock = b[row][col];
       this.highBlock.highlight();
     }
+  },
+
+  getClickedBlock : function() {
+    var db = this.downBlock;
+    var hb = this.highBlock;
+    var land = this.land;
+    var c = this.cursor;
+
+    if (!db && c.down)
+      this.downBlock = hb;
+    if (!c.down) {
+      this.downBlock = null;
+      if (db === hb)
+        return db;
+    }
+
+    return null;
   },
 };
 

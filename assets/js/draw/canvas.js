@@ -1,7 +1,15 @@
 game.draw.canvas = {
   cursor : {
     x : 0,
-    y : 0
+    y : 0,
+    get row() {
+      return Math.floor(this.y / game.draw.TILE_SIZE);
+    },
+    get column() {
+      return Math.floor(this.x / game.draw.TILE_SIZE);
+    },
+
+    down : false,
   },
 
   canvas : document.createElement('canvas'),
@@ -16,6 +24,12 @@ game.draw.canvas = {
     this.canvas.addEventListener('mousemove', (e) => {
       this.cursor.x = e.clientX;
       this.cursor.y = e.clientY;
+    });
+    this.canvas.addEventListener('mousedown', (e) => {
+      this.cursor.down = true;
+    });
+    this.canvas.addEventListener('mouseup', (e) => {
+      this.cursor.down = false;
     });
 
     this.reset();
