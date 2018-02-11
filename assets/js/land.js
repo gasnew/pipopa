@@ -12,5 +12,13 @@ game.land = {
       }
     }
   },
+
+  blockAt : function(row, col) {
+    if (row < this.blocks.length && col < this.blocks[0].length) {
+      return this.blocks[row][col];
+    }
+
+    return null;
+  },
 };
 

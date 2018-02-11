@@ -1,7 +1,7 @@
 var game = {
   init : () => {
     game.land.init(50, 50);
-    game.entities.init(game.land);
+    game.entities.init(game.land, (a) => game.Net.addAction(a));
     game.hud.init(game.land, game.entities, game.draw.canvas.cursor);
     game.draw.init();
   },

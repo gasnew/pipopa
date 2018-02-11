@@ -11,19 +11,19 @@ game.hud = {
   update : function() {
     this.highlightBlock();
     var clickedBlock = this.getClickedBlock();
-    if (clickedBlock) console.log(clickedBlock);
+
+    if (clickedBlock && game.Math.blocksTo(this.entities.player.block, clickedBlock) === 1) {
+      this.entities.player.moveTo(clickedBlock);
+    }
   },
 
   highlightBlock : function() {
     var row = this.cursor.row;
     var col = this.cursor.column;
-    var b = this.land.blocks;
 
     if (this.highBlock) this.highBlock.unhighlight();
-    if (row < b.length && col < b[0].length) {
-      this.highBlock = b[row][col];
-      this.highBlock.highlight();
-    }
+    this.highBlock = this.land.blockAt(row, col);
+    if (this.highBlock) this.highBlock.highlight();
   },
 
   getClickedBlock : function() {
