@@ -1,10 +1,19 @@
-var http = require('http');
-var serveStatic = require('serve-static');
-var finalhandler = require('finalhandler');
+// Imports
+var express = require('express');
+var path = require('path');
 
-var serve = serveStatic('./');
+var routes = require('./routes/index.js');
+var users = require('./routes/users.js');
 
-http.createServer((request, response) => {
-  serve(request, response, finalhandler(request, response));
-}).listen(8080);
+// Configure app
+var app = express();
+app.set('port', 8080);
+app.use(express.static(path.join(__dirname, 'assets')));
+
+// Set routes
+app.use('/', routes);
+app.use('/users', users);
+
+// Start server
+app.listen(app.get('port'));
 
