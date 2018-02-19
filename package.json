@@ -3,6 +3,14 @@
   "main": "app.js",
   "dependencies": {
     "bcryptjs": "^0.7.12",
-    "passport": "^0.2.0"
+    "cookie-parser": "^1.4.3",
+    "body-parser": "*",
+    "method-override": "*",
+    "express": "~4.13.4", 
+    "express-handlebars": "^3.0.0",
+    "express-session": "*",
+    "passport": "^0.2.0",
+    "passport-local": "^1.0.0",
+    "q": "^1.0.1"
   }
 }
