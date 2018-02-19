@@ -1,22 +1,19 @@
 var models = require('../models');
 
 module.exports = function(sequelize, DataTypes) {
-  var Player = sequelize.define('Player', {
+  var Tile = sequelize.define('Tile', {
     x: {
       type: DataTypes.INTEGER,
+      primaryKey: true,
       allowNull: false,
     },
     y: {
       type: DataTypes.INTEGER,
+      primaryKey: true,
       allowNull: false,
     },
   });
 
-  Player.associate = function(models) {
-    Player.hasMany(models.Turn);
-    Player.belongsTo(models.User);
-  };
-
-  return Player;
+  return Tile;
 };
 
