@@ -60,7 +60,6 @@ app.use('/turns', turns);
 function ensureAuthenticated(req, res, next) {
     if (req.isAuthenticated()) { return next(); }
     req.session.error = 'Please sign in!';
-    console.log('wat');
     res.redirect('/signin');
 }
 

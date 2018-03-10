@@ -1,16 +1,16 @@
 game.draw = {
-  TILE_SIZE : 16,
+  TILE_SIZE: 16,
 
-  init : function() {
+  init: function() {
     this.context = this.canvas.init();
     this.entities.init((tile, color) => this._tile(tile, color));
   },
 
-  reset : function() {
+  reset: function() {
     this.canvas.reset();
   },
 
-  land : function(blocks) {
+  land: function(blocks) {
     var b = blocks;
     for (var i = 0; i < b.length; i++) {
       var r = b[i];
@@ -20,7 +20,7 @@ game.draw = {
     }
   },
 
-  _tile : function(tile, color = 'green') {
+  _tile: function(tile, color = 'green') {
     ctx = this.context;
 
     var ts = this.TILE_SIZE;

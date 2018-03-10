@@ -1,7 +1,7 @@
 game.land = {
-  blocks : [],
+  blocks: [],
 
-  init : function(rows, cols) {
+  init: function(rows, cols) {
     this.blocks = new Array(rows);
 
     for (var i = 0; i < rows; i++) {
@@ -13,7 +13,7 @@ game.land = {
     }
   },
 
-  blockAt : function(row, col) {
+  blockAt: function(row, col) {
     if (row < this.blocks.length && col < this.blocks[0].length) {
       return this.blocks[row][col];
     }

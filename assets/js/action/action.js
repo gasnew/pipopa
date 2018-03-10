@@ -1,5 +1,5 @@
 game.Action = {
-  init : function(type) {
+  init: function(type) {
     this.type = type;
   },
 };

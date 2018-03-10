@@ -1,10 +1,10 @@
 module.exports = function(sequelize, DataTypes) {
   var Player = sequelize.define('Player', {
-    x : {
+    x: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    y : {
+    y: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },

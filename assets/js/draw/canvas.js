@@ -1,7 +1,7 @@
 game.draw.canvas = {
-  cursor : {
-    x : 0,
-    y : 0,
+  cursor: {
+    x: 0,
+    y: 0,
     get row() {
       return Math.floor(this.y / game.draw.TILE_SIZE);
     },
@@ -9,12 +9,12 @@ game.draw.canvas = {
       return Math.floor(this.x / game.draw.TILE_SIZE);
     },
 
-    down : false,
+    down: false,
   },
 
-  canvas : document.createElement('canvas'),
+  canvas: document.createElement('canvas'),
 
-  init : function() {
+  init: function() {
     this.canvas.width = 1000;
     this.canvas.height = 1000;
     this.context = this.canvas.getContext('2d');
@@ -37,7 +37,7 @@ game.draw.canvas = {
     return this.context;
   },
 
-  reset : function() {
+  reset: function() {
     var ctx = this.context;
 
     ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);

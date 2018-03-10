@@ -2,7 +2,7 @@ var models = require('../models');
 
 module.exports = function(sequelize, DataTypes) {
   var Turn = sequelize.define('Turn', {
-    status : {
+    status: {
       type: DataTypes.STRING,
       allowNull: false,
     },

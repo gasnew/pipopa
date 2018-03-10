@@ -1,5 +1,5 @@
 game.Net = {
-  postAction : function(actionRequest, callback) {
+  postAction: function(actionRequest, callback) {
     xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = this.buildActionResponse(callback);
     xhttp.open('POST', window.location.href + 'turns/new-action', true);
@@ -7,7 +7,7 @@ game.Net = {
     xhttp.send(JSON.stringify(actionRequest));
   },
 
-  buildActionResponse : function(callback) {
+  buildActionResponse: function(callback) {
     return function() {
       if (this.readyState == 4) {
         if (this.status == 200) {

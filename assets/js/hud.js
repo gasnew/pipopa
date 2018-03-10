@@ -1,5 +1,5 @@
 game.hud = {
-  init : function(land, entities, cursor) {
+  init: function(land, entities, cursor) {
     this.land = land;
     this.entities = entities;
     this.cursor = cursor;
@@ -8,7 +8,7 @@ game.hud = {
     this.downBlock = null;
   },
 
-  update : function() {
+  update: function() {
     this.highlightBlock();
     var clickedBlock = this.getClickedBlock();
 
@@ -17,7 +17,7 @@ game.hud = {
     }
   },
 
-  highlightBlock : function() {
+  highlightBlock: function() {
     var row = this.cursor.row;
     var col = this.cursor.column;
 
@@ -26,7 +26,7 @@ game.hud = {
     if (this.highBlock) this.highBlock.highlight();
   },
 
-  getClickedBlock : function() {
+  getClickedBlock: function() {
     var db = this.downBlock;
     var hb = this.highBlock;
     var land = this.land;

@@ -10,7 +10,7 @@ var bcrypt = require('bcryptjs'),
    //check if name is already assigned in our database
    models.User.findOne({
      where: {
-       'name' : name
+       'name': name
      }
    })
    .then(function (result) {
@@ -50,7 +50,7 @@ var bcrypt = require('bcryptjs'),
 
      models.User.findOne({
        where: {
-         'name' : name
+         'name': name
        }
      })
      .then(function (result) {

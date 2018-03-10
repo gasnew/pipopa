@@ -1,5 +1,5 @@
 game.entities = {
-  init : function(land) {
+  init: function(land) {
     this.land = land;
 
     this.player = Object.create(this.Player);
