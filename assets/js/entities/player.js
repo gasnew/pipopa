@@ -10,14 +10,16 @@ game.entities.Player = {
     var moveRequest = Object.create(game.Action.MoveRequest);
     moveRequest.init(this.block, block);
 
-    game.Net.postAction(moveRequest, this.receiveTurn);
+    game.Net.postAction(moveRequest, this.buildReceiveTurn());
 
     this.applyAction(moveRequest);
   },
 
-  receiveTurn : function(response_obj) {
-    this.turn = response_obj;
-    console.log(response_obj);
+  buildReceiveTurn : function() {
+    return (response_obj) => {
+      this.turn = response_obj;
+      console.log(response_obj);
+    };
   },
 
   applyAction : function(action) {

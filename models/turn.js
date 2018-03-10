@@ -39,7 +39,6 @@ module.exports = function(sequelize, DataTypes) {
       return new Promise((resolve, reject) => {
         this.getActions()
         .then(actions => {
-          //resolve({thing: 'THING'});
           action_values = actions.map(a => a.dataValues);
           resolve(action_values);
         });
