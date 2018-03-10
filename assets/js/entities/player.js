@@ -24,7 +24,7 @@ game.entities.Player = {
 
   applyAction: function(action) {
     if (action.type === 'move') {
-      var block = action.toBlock;
+      var block = action.content.toBlock;
 
       this.x = block.x;
       this.y = block.y;

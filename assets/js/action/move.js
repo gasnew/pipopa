@@ -4,8 +4,10 @@ Object.assign(game.Action.MoveRequest, {
   init: function(fromBlock, toBlock) {
     game.Action.init.call(this, 'move');
 
-    this.fromBlock = fromBlock;
-    this.toBlock = toBlock;
+    this.content = {
+      fromBlock: fromBlock,
+      toBlock: toBlock,
+    };
   },
 });
 

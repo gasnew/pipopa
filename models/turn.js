@@ -17,21 +17,57 @@ module.exports = function(sequelize, DataTypes) {
   };
 
   Turn.protFuncs = function(models) {
-    Turn.prototype.validateAction = function(action) {
+    Turn.prototype.integrateAction = function(action) {
       return new Promise((resolve, reject) => {
-        if (action.type == 'move') {
-          models.Action.create({
-            type: action.type,
-            content: {
-              fromBlock: action.fromBlock,
-              toBlock: action.toBlock,
-            },
-          })
+        this.validateAction(action)
+        .then(result => {
+          models.Action.create(action)
           .then(a => this.addAction(a))
-          .then(t => {
-            resolve(this.toPostObj());
-          });
-        }
+          .then(t => resolve(this.toPostObj()));
+        })
+        .catch(result => {
+          reject("INVALID ACTION");
+        });
+      });
+    };
+
+    Turn.prototype.validateAction = function(a) {
+      return new Promise((resolve, reject) => {
+        this.simulateTurn()
+        .then(result => {
+          this.simulateAction(result, a)
+          .then(r => resolve(r))
+          .catch(e => reject(e));
+        })
+        .catch(result => {
+          // GAME STATE CHANGED SINCE LAST ACTION
+          reject(result);
+        });
+      });
+    };
+
+    Turn.prototype.simulateTurn = function() {
+      var result = {
+        state: {},
+        error: null,
+      };
+
+      return new Promise((resolve, reject) => {
+        resolve(result);
+      });
+    };
+
+    Turn.prototype.simulateAction = function(result, a) {
+      if (a.type == 'move') {
+        return this.simulateMove(result, a);
+      } else {
+        throw new Error('No action of type' + a.type);
+      }
+    };
+
+    Turn.prototype.simulateMove = function(result, m) {
+      return new Promise((resolve, reject) => {
+        resolve(result);
       });
     };
 
