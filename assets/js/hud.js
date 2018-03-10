@@ -4,38 +4,38 @@ game.hud = {
     this.entities = entities;
     this.cursor = cursor;
 
-    this.highBlock = null;
-    this.downBlock = null;
+    this.highTile = null;
+    this.downTile = null;
   },
 
   update: function() {
-    this.highlightBlock();
-    var clickedBlock = this.getClickedBlock();
+    this.highlightTile();
+    var clickedTile = this.getClickedTile();
 
-    if (clickedBlock && game.Math.blocksTo(this.entities.player.block, clickedBlock) === 1) {
-      this.entities.player.moveTo(clickedBlock);
+    if (clickedTile && game.Math.tilesTo(this.entities.player.tile, clickedTile) === 1) {
+      this.entities.player.moveTo(clickedTile);
     }
   },
 
-  highlightBlock: function() {
+  highlightTile: function() {
     var row = this.cursor.row;
     var col = this.cursor.column;
 
-    if (this.highBlock) this.highBlock.unhighlight();
-    this.highBlock = this.land.blockAt(row, col);
-    if (this.highBlock) this.highBlock.highlight();
+    if (this.highTile) this.highTile.unhighlight();
+    this.highTile = this.land.tileAt(row, col);
+    if (this.highTile) this.highTile.highlight();
   },
 
-  getClickedBlock: function() {
-    var db = this.downBlock;
-    var hb = this.highBlock;
+  getClickedTile: function() {
+    var db = this.downTile;
+    var hb = this.highTile;
     var land = this.land;
     var c = this.cursor;
 
     if (!db && c.down)
-      this.downBlock = hb;
+      this.downTile = hb;
     if (!c.down) {
-      this.downBlock = null;
+      this.downTile = null;
       if (db === hb)
         return db;
     }

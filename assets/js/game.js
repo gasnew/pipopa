@@ -11,7 +11,7 @@ var game = {
 
     game.hud.update();
 
-    game.draw.land(game.land.blocks);
+    game.draw.land(game.land.tiles);
     game.draw.entities.player(game.entities.player);
   },
 };

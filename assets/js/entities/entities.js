@@ -3,7 +3,7 @@ game.entities = {
     this.land = land;
 
     this.player = Object.create(this.Player);
-    this.player.init(25, 25, land.blockAt(25, 25));
+    this.player.init(25, 25, land.tileAt(25, 25));
   },
 };
 

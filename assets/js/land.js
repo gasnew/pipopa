@@ -1,21 +1,21 @@
 game.land = {
-  blocks: [],
+  tiles: [],
 
   init: function(rows, cols) {
-    this.blocks = new Array(rows);
+    this.tiles = new Array(rows);
 
     for (var i = 0; i < rows; i++) {
-      this.blocks[i] = Array(cols);
+      this.tiles[i] = Array(cols);
       for (var j = 0; j < cols; j++) {
         var new_b = Object.create(game.Tile);
-        this.blocks[i][j] = new_b.init(j, i);
+        this.tiles[i][j] = new_b.init(j, i);
       }
     }
   },
 
-  blockAt: function(row, col) {
-    if (row < this.blocks.length && col < this.blocks[0].length) {
-      return this.blocks[row][col];
+  tileAt: function(row, col) {
+    if (row < this.tiles.length && col < this.tiles[0].length) {
+      return this.tiles[row][col];
     }
 
     return null;

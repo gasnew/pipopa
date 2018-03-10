@@ -1,14 +1,14 @@
 game.entities.Player = {
-  init: function(x, y, block) {
+  init: function(x, y, tile) {
     this.x = x;
     this.y = y;
-    this.block = block;
+    this.tile = tile;
     this.turn = null;
   },
 
-  moveTo: function(block) {
+  moveTo: function(tile) {
     var moveRequest = Object.create(game.Action.MoveRequest);
-    moveRequest.init(this.block, block);
+    moveRequest.init(this.tile, tile);
 
     game.Net.postAction(moveRequest, this.buildReceiveTurn());
 
@@ -24,11 +24,11 @@ game.entities.Player = {
 
   applyAction: function(action) {
     if (action.type === 'move') {
-      var block = action.content.toBlock;
+      var tile = action.content.toTile;
 
-      this.x = block.x;
-      this.y = block.y;
-      this.block = block;
+      this.x = tile.x;
+      this.y = tile.y;
+      this.tile = tile;
     }
   },
 };

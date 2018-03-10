@@ -10,8 +10,8 @@ game.draw = {
     this.canvas.reset();
   },
 
-  land: function(blocks) {
-    var b = blocks;
+  land: function(tiles) {
+    var b = tiles;
     for (var i = 0; i < b.length; i++) {
       var r = b[i];
       for (var j = 0; j < r.length; j++) {
