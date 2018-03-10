@@ -1,6 +1,6 @@
-game.Action.Move = Object.create(game.Action);
+game.Action.MoveRequest = Object.create(game.Action);
 
-Object.assign(game.Action.Move, {
+Object.assign(game.Action.MoveRequest, {
   init : function(fromBlock, toBlock) {
     game.Action.init.call(this, 'move');
 

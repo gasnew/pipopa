@@ -11,6 +11,7 @@ var path = require('path');
 
 var routes = require('./routes/index.js');
 var users = require('./routes/users.js');
+var turns = require('./routes/turns.js');
 
 // CONFIGURE APP
 var app = express();
@@ -54,6 +55,7 @@ app.set('view engine', 'handlebars');
 app.use('/', routes);
 app.use(ensureAuthenticated);
 app.use('/users', users);
+app.use('/turns', turns);
 
 function ensureAuthenticated(req, res, next) {
     if (req.isAuthenticated()) { return next(); }
@@ -70,15 +72,15 @@ funct = require('./auth_funcs.js'); //funct file contains our helper functions f
 
 //===============PASSPORT===============
 
-// Use the LocalStrategy within Passport to login/"signin" users.
+// Use the LocalStrategy within Passport to name/"signin" users.
  passport.use('local-signin', new LocalStrategy(
    {passReqToCallback : true}, //allows us to pass back the request to the callback
-   function(req, username, password, done) {
-     funct.localAuth(username, password)
+   function(req, name, password, done) {
+     funct.localAuth(name, password)
      .then(function (user) {
        if (user) {
-         console.log("LOGGED IN AS: " + user.username);
-         req.session.success = 'You are successfully logged in ' + user.username + '!';
+         console.log("LOGGED IN AS: " + user.name);
+         req.session.success = 'You are successfully logged in ' + user.name + '!';
          done(null, user);
        }
        if (!user) {
@@ -95,18 +97,18 @@ funct = require('./auth_funcs.js'); //funct file contains our helper functions f
  // Use the LocalStrategy within Passport to register/"signup" users.
  passport.use('local-signup', new LocalStrategy(
    {passReqToCallback : true}, //allows us to pass back the request to the callback
-   function(req, username, password, done) {
-     console.log(username);
-     funct.localReg(username, password)
+   function(req, name, password, done) {
+     console.log(name);
+     funct.localReg(name, password)
      .then(function (user) {
        if (user) {
-         console.log("REGISTERED: " + user.username);
-         req.session.success = 'You are successfully registered and logged in ' + user.username + '!';
+         console.log("REGISTERED: " + user.name);
+         req.session.success = 'You are successfully registered and logged in ' + user.name + '!';
          done(null, user);
        }
        if (!user) {
          console.log("COULD NOT REGISTER");
-         req.session.error = 'That username is already in use, please try a different one.'; //inform user could not log them in
+         req.session.error = 'That name is already in use, please try a different one.'; //inform user could not log them in
          done(null, user);
        }
      })
@@ -117,8 +119,8 @@ funct = require('./auth_funcs.js'); //funct file contains our helper functions f
  ));
 
 // Passport session setup.
- passport.serializeUser(function(user, done) {
- console.log("serializing " + user.username);
+passport.serializeUser(function(user, done) {
+ console.log("serializing " + user.name);
  done(null, user);
 });
 

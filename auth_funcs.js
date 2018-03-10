@@ -3,31 +3,37 @@ var bcrypt = require('bcryptjs'),
     models = require('./models');
 
  //used in local-signup strategy
- exports.localReg = function (username, password) {
+ exports.localReg = function (name, password) {
    var deferred = Q.defer();
 
-   console.log(username);
-   //check if username is already assigned in our database
+   console.log(name);
+   //check if name is already assigned in our database
    models.User.findOne({
      where: {
-       'username' : username
+       'name' : name
      }
    })
    .then(function (result) {
      if (null != result) {
-       console.log("USERNAME ALREADY EXISTS:", result.username);
-       deferred.resolve(false); // username exists
+       console.log("USERNAME ALREADY EXISTS:", result.name);
+       deferred.resolve(false); // name exists
      } else  {
        var hash = bcrypt.hashSync(password, 8);
        var user = {
-         "username": username,
+         "name": name,
          "password": hash,
        };
 
-       console.log("CREATING USER:", username);
-       models.User.create(user);
-
-       deferred.resolve(user);
+       console.log("CREATING USER:", name);
+       models.User.create(user).then(u => {
+         return models.Player.create({UserId: u.id, x: 25, y: 25});
+       })
+       .then(p => {
+         return models.Turn.create({PlayerId: p.id, status: 'running'});
+       })
+       .then(t => {
+         deferred.resolve(user);
+       });
      }
    });
 
@@ -39,23 +45,23 @@ var bcrypt = require('bcryptjs'),
    //if user exists check if passwords match (use bcrypt.compareSync(password, hash); // true where 'hash' is password in DB)
      //if password matches take into website
  //if user doesn't exist or password doesn't match tell them it failed
- exports.localAuth = function (username, password) {
+ exports.localAuth = function (name, password) {
    var deferred = Q.defer();
 
      models.User.findOne({
        where: {
-         'username' : username
+         'name' : name
        }
      })
      .then(function (result) {
        if (null == result) {
-         console.log("USERNAME NOT FOUND:", username);
+         console.log("USERNAME NOT FOUND:", name);
 
          deferred.resolve(false);
        } else {
          var hash = result.password;
 
-         console.log("FOUND USER: " + result.username);
+         console.log("FOUND USER: " + result.name);
 
          if (bcrypt.compareSync(password, hash)) {
            deferred.resolve(result);

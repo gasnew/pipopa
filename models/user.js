@@ -2,7 +2,7 @@ var models = require('../models');
 
 module.exports = function(sequelize, DataTypes) {
   var User = sequelize.define('User', {
-    username: {
+    name: {
       type: DataTypes.STRING,
       allowNull: false,
     },

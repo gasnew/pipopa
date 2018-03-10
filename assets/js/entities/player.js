@@ -1,17 +1,23 @@
 game.entities.Player = {
-  init : function(addNetAction, x, y, block) {
-    this.addNetAction = addNetAction;
+  init : function(x, y, block) {
     this.x = x;
     this.y = y;
     this.block = block;
+    this.turn = null;
   },
 
   moveTo : function(block) {
-    var move = Object.create(game.Action.Move);
-    move.init(this.block, block);
+    var moveRequest = Object.create(game.Action.MoveRequest);
+    moveRequest.init(this.block, block);
 
-    this.addNetAction(move);
-    this.applyAction(move);
+    game.Net.postAction(moveRequest, this.receiveTurn);
+
+    this.applyAction(moveRequest);
+  },
+
+  receiveTurn : function(response_obj) {
+    this.turn = response_obj;
+    console.log(response_obj);
   },
 
   applyAction : function(action) {
