@@ -1,9 +1,10 @@
 game.entities = {
-  init: function(land) {
+  init: function(land, entities) {
     this.land = land;
 
-    this.player = Object.create(this.Player);
-    this.player.init(25, 25, land.tileAt(25, 25));
+    this.players = entities.players;
+    this.player = this.players[0];
+    this.player.tile = land.tileAt(this.player.x, this.player.y);
   },
 };
 

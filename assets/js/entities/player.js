@@ -4,22 +4,20 @@ game.entities.Player = {
     this.y = y;
     this.tile = tile;
     this.turn = null;
+
+    return this;
   },
 
   moveTo: function(tile) {
     var moveRequest = Object.create(game.Action.MoveRequest);
     moveRequest.init(this.tile, tile);
 
-    game.Net.postAction(moveRequest, this.buildReceiveTurn());
+    game.Net.postAction(moveRequest).then(turn => {
+      console.log(turn);
+      this.turn = turn;
+    });
 
     this.applyAction(moveRequest);
-  },
-
-  buildReceiveTurn: function() {
-    return (response_obj) => {
-      this.turn = response_obj;
-      console.log(response_obj);
-    };
   },
 
   applyAction: function(action) {

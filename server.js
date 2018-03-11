@@ -11,6 +11,7 @@ var path = require('path');
 
 var routes = require('./routes/index.js');
 var users = require('./routes/users.js');
+var players = require('./routes/players.js');
 var turns = require('./routes/turns.js');
 
 // CONFIGURE APP
@@ -55,6 +56,7 @@ app.set('view engine', 'handlebars');
 app.use('/', routes);
 app.use(ensureAuthenticated);
 app.use('/users', users);
+app.use('/players', players);
 app.use('/turns', turns);
 
 function ensureAuthenticated(req, res, next) {
