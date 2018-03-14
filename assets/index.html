@@ -8,6 +8,10 @@
     </head>
     
     <body style="margin:0px;">
+	<!-- Visual thangs. -->
+	<canvas id='canvas' width='800' height='800'></canvas>
+	<button type='button' onclick='submitTurn()'>Sumit Turn!</button>
+
         <!-- JavaScript includes. -->
 	<script type='text/javascript' src="./js/game.js"></script>
 	<script type='text/javascript' src="./js/math.js"></script>
@@ -23,6 +27,13 @@
 	<script type='text/javascript' src="./js/draw/canvas.js"></script>
 	<script type='text/javascript' src="./js/draw/entities.js"></script>
 	<script type='text/javascript' src="./js/main.js"></script>
+
+	<!-- Funny methods. -->
+	<script type='text/javascript'>
+	  function submitTurn() {
+            game.Net.submitTurn();
+	  }
+	</script>
 	
     </body>
 </html>

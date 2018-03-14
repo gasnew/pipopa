@@ -1,5 +1,28 @@
 game.Net = {
-  request: function(type, addr, content = {}) {
+  reqQueue: [],
+
+  addRequest: function(type, addr, content = {}) {
+    return new Promise((resolve, reject) => {
+      this.reqQueue.push(() => {
+        this.sendRequest(type, addr, content)
+        .then((response) => {
+          resolve(response);
+        })
+        .then(() => {
+          this.reqQueue.shift();
+          if (this.reqQueue.length > 0) {
+            this.reqQueue[0]();
+          }
+        });
+      });
+
+      if (this.reqQueue.length === 1) {
+        this.reqQueue[0]();
+      }
+    });
+  },
+
+  sendRequest: function(type, addr, content) {
     return new Promise((resolve, reject) => {
       xhttp = new XMLHttpRequest();
       xhttp.onreadystatechange = this.buildRequestResponse(resolve, reject);
@@ -14,25 +37,29 @@ game.Net = {
     });
   },
 
+  clearQueue: function() {
+    this.reqQueue.length = 0;
+  },
+
   post: function(addr, content) {
-    return this.request('POST', addr, content);
+    return this.addRequest('POST', addr, content);
   },
 
   get: function(addr) {
-    return this.request('GET', addr);
+    return this.addRequest('GET', addr);
   },
 
   buildRequestResponse: function(resolve, reject) {
     return function() {
       if (this.readyState == 4) {
         if (this.status == 200) {
-          var content = JSON.parse(this.responseText);
-          resolve(content);
+          var response = JSON.parse(this.responseText);
+          resolve(response);
         } else if(this.status == 400) {
-          var response = {
+          var response_err = {
             'error': 'BAD REQUESTS ALL OVER',
           };
-          reject(response);
+          reject(response_err);
         }
       }
     };
@@ -69,6 +96,10 @@ game.Net = {
 
   postAction: function(actionRequest) {
     return this.post('turns/new-action', actionRequest);
+  },
+
+  submitTurn: function() {
+    console.log('youdidityay');
   },
 };
 

@@ -12,13 +12,10 @@ game.draw.canvas = {
     down: false,
   },
 
-  canvas: document.createElement('canvas'),
+  canvas: document.getElementById('canvas'),
 
   init: function() {
-    this.canvas.width = 1000;
-    this.canvas.height = 1000;
     this.context = this.canvas.getContext('2d');
-    document.body.insertBefore(this.canvas, document.body.childNodes[0]);
 
     var that = this;
     this.canvas.addEventListener('mousemove', (e) => {
