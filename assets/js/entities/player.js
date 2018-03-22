@@ -20,6 +20,12 @@ game.entities.Player = {
     this.applyAction(moveRequest);
   },
 
+  fastForward: function() {
+    for (var action of this.turn) {
+      this.applyAction(action);
+    }
+  },
+
   applyAction: function(action) {
     if (action.type === 'move') {
       var tile = action.content.toTile;

@@ -86,7 +86,11 @@ game.Net = {
     var y = response.y;
     var player = Object.create(game.entities.Player);
 
-    return player.init(x, y, null);
+    player.init(x, y, null);
+    player.turn = await this.getTurn();
+    player.fastForward();
+
+    return player;
   },
 
   getPlayers: function() {
