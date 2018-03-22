@@ -11,6 +11,8 @@
 	<!-- Visual thangs. -->
 	<canvas id='canvas' width='800' height='800'></canvas>
 	<button type='button' onclick='submitTurn()'>Sumit Turn!</button>
+	<button type='button' onclick='logTurn()'>Log Turn!</button>
+	<button type='button' onclick='newTurn()'>New Turn!</button>
 
         <!-- JavaScript includes. -->
 	<script type='text/javascript' src="./js/game.js"></script>
@@ -31,12 +33,17 @@
 	<!-- Funny methods. -->
 	<script type='text/javascript'>
 	  async function submitTurn() {
-            try {
-	      await game.Net.submitTurn();
-	      console.log('Turn submitted!');
-	    } catch(e) {
-	      console.error(e);
-	    }
+            var res = await game.Net.submitTurn();
+            console.log('Turn submitted!');
+            console.log(res);
+	  }
+	  async function logTurn() {
+            var res = await game.Net.getTurn();
+            console.log(res);
+	  }
+	  async function newTurn() {
+            var res = await game.Net.newTurn();
+            console.log('Turn finished!');
 	  }
 	</script>
 	

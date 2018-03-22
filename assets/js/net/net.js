@@ -110,5 +110,13 @@ game.Net = {
   submitTurn: function() {
     return this.get('turns/submit');
   },
+
+  getTurn: function() {
+    return this.get('turns/current');
+  },
+
+  newTurn: function() {
+    return this.get('turns/force-finish');
+  },
 };
 

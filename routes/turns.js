@@ -20,13 +20,42 @@ router.get('/submit', async function(req, res) {
     var user = await models.User.find({where: {name: req.user.name}});
     var player = await user.getPlayer();
     var turn = await player.getCurrentTurn();
-    var result = await turn.simulate();
-    await turn.finish();
+    var result = await turn.finish();
 
     var newTurn = await models.Turn.create({status: 'running'});
     await player.addTurn(newTurn);
 
     res.json(result);
+  } catch(e) {
+    console.error(e);
+    res.json(e);
+  }
+});
+
+router.get('/current', async function(req, res) {
+  try {
+    var user = await models.User.find({where: {name: req.user.name}});
+    var player = await user.getPlayer();
+    var turn = await player.getCurrentTurn();
+
+    res.json(await turn.toPostObj());
+  } catch(e) {
+    console.error(e);
+    res.json(e);
+  }
+});
+
+router.get('/force-finish', async function(req, res) {
+  try {
+    var user = await models.User.find({where: {name: req.user.name}});
+    var player = await user.getPlayer();
+    var turn = await player.getCurrentTurn();
+    var result = await turn.finish(true);
+
+    var newTurn = await models.Turn.create({status: 'running'});
+    await player.addTurn(newTurn);
+
+    res.json(await result);
   } catch(e) {
     console.error(e);
     res.json(e);

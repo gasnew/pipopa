@@ -12,7 +12,8 @@ game.hud = {
     this.highlightTile();
     var clickedTile = this.getClickedTile();
 
-    if (clickedTile && game.Math.tilesTo(this.entities.player.tile, clickedTile) === 1) {
+    // if (clickedTile && game.Math.tilesTo(this.entities.player.tile, clickedTile) === 1) {
+    if (clickedTile) {
       this.entities.player.moveTo(clickedTile);
     }
   },

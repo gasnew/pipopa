@@ -1,4 +1,5 @@
 var models = require('../models');
+var math = require('../lib/math');
 
 module.exports = function(sequelize, DataTypes) {
   var Turn = sequelize.define('Turn', {
@@ -18,55 +19,62 @@ module.exports = function(sequelize, DataTypes) {
 
   Turn.protFuncs = function(models) {
     Turn.prototype.integrateAction = async function(action) {
-      await models.sequelize.transaction(async (t) => {
-        await this.validateAction(action);
-        var newA = await models.Action.create(action, {transaction: t});
-        await this.addAction(newA, {transaction: t});
-      });
+      try {
+        var newAT = await models.sequelize.transaction();
+        var simT = await models.sequelize.transaction();
 
-      return await this.toPostObj();
-    };
+        var newA = await models.Action.create(action, {transaction: newAT});
+        await this.addAction(newA, {transaction: newAT});
 
-    Turn.prototype.validateAction = async function(a) {
-      var sResult = await this.simulate();
-      await this.simulateAction(sResult.state, a);
-    };
+        await this.perform(simT, newA);
+        await simT.rollback();
+        await newAT.commit();
 
-    Turn.prototype.simulate = async function() {
-      var result = {
-        state: {},
-        error: null,
-      };
+        return await this.toPostObj();
+      } catch(e) {
+        await simT.rollback();
+        await newAT.rollback();
 
-      return result;
-    };
-
-    Turn.prototype.simulateAction = async function(result, a) {
-      if (a.type == 'move') {
-        return await this.simulateMove(result, a);
-      } else {
-        throw new Error('No action of type' + a.type);
+        throw e;
       }
     };
 
-    Turn.prototype.simulateMove = async function(result, m) {
-      return result;
+    Turn.prototype.finish = async function(force=false) {
+      try {
+        if (!force) {
+          var t = await models.sequelize.transaction();
+
+          await this.perform(t);
+          await t.commit();
+        }
+
+        this.status = 'done';
+        await this.save();
+
+        return await this.toPostObj();
+      } catch(e) {
+        await t.rollback();
+
+        throw e;
+      }
     };
 
-    Turn.prototype.perform = async function() {
-      await this.simulate();
-
+    Turn.prototype.perform = async function(t, newA) {
       var actions = await this.getActions();
-      await models.sequelize.transaction(async (t) => {
-        for (var a of actions) {
-          await this.performAction(a, t);
-        }
-      });
+      for (var a of actions) {
+        await this.performAction(a, t);
+      }
+      if (newA)
+        await this.performAction(newA, t);
     };
 
     Turn.prototype.performAction = async function(a, t) {
       if (a.type == 'move') {
         var player = await this.getPlayer({transaction: t});
+        var dist = math.tilesTo(player, a.content.toTile);
+        if (dist !== 1)
+          throw new Error('Invalid move of distance ' + dist);
+
         player.x = a.content.toTile.x;
         player.y = a.content.toTile.y;
         await player.save({transaction: t});
@@ -78,12 +86,6 @@ module.exports = function(sequelize, DataTypes) {
     Turn.prototype.toPostObj = async function() {
       var actions = await this.getActions();
       return actions.map(a => a.dataValues);
-    };
-
-    Turn.prototype.finish = async function() {
-      await this.perform();
-      this.status = 'done';
-      await this.save();
     };
   };
 
