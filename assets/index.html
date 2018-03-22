@@ -32,7 +32,7 @@
 	<script type='text/javascript'>
 	  async function submitTurn() {
             try {
-	      game.Net.submitTurn();
+	      await game.Net.submitTurn();
 	      console.log('Turn submitted!');
 	    } catch(e) {
 	      console.error(e);
