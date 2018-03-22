@@ -8,16 +8,12 @@ game.entities.Player = {
     return this;
   },
 
-  moveTo: function(tile) {
+  moveTo: async function(tile) {
     var moveRequest = Object.create(game.Action.MoveRequest);
     moveRequest.init(this.tile, tile);
 
-    game.Net.postAction(moveRequest).then(turn => {
-      console.log(turn);
-      this.turn = turn;
-    });
-
     this.applyAction(moveRequest);
+    this.sendAction(moveRequest);
   },
 
   fastForward: function() {
@@ -26,13 +22,43 @@ game.entities.Player = {
     }
   },
 
-  applyAction: function(action) {
+  rewind: function() {
+    for (var action of this.turn.reverse()) {
+      this.undoAction(action);
+    }
+  },
+
+  applyAction: async function(action) {
     if (action.type === 'move') {
       var tile = action.content.toTile;
 
       this.x = tile.x;
       this.y = tile.y;
       this.tile = tile;
+    }
+  },
+
+  undoAction: function(action) {
+    if (action.type === 'move') {
+      var tile = action.content.fromTile;
+
+      this.x = tile.x;
+      this.y = tile.y;
+      this.tile = tile;
+    }
+  },
+
+  sendAction: async function(action) {
+    try {
+      var turn = await game.Net.postAction(action);
+      console.log(turn);
+      this.turn = turn;
+    } catch(turn) {
+      console.error('Action failed!');
+      this.undoAction(action);
+      this.rewind();
+      this.turn = turn;
+      this.fastForward();
     }
   },
 };

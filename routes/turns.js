@@ -8,10 +8,17 @@ router.post('/new-action', async function(req, res) {
     var player = await user.getPlayer();
     var turn = await player.getCurrentTurn();
     var turn_obj = await turn.integrateAction(req.body);
-    res.json(turn_obj);
+
+    res.json({
+      success: true,
+      content: turn_obj
+    });
   } catch(e) {
     console.error(e);
-    res.json({thing: 'YOUR ACTION IS INVALID'});
+    res.json({
+      success: false,
+      content: await turn.toPostObj()
+    });
   }
 });
 
@@ -20,15 +27,21 @@ router.get('/submit', async function(req, res) {
     var user = await models.User.find({where: {name: req.user.name}});
     var player = await user.getPlayer();
     var turn = await player.getCurrentTurn();
-    var result = await turn.finish();
+    var turn_obj = await turn.finish();
 
     var newTurn = await models.Turn.create({status: 'running'});
     await player.addTurn(newTurn);
 
-    res.json(result);
+    res.json({
+      success: true,
+      content: turn_obj
+    });
   } catch(e) {
     console.error(e);
-    res.json(e);
+    res.json({
+      success: false,
+      content: await turn.toPostObj()
+    });
   }
 });
 
@@ -38,10 +51,16 @@ router.get('/current', async function(req, res) {
     var player = await user.getPlayer();
     var turn = await player.getCurrentTurn();
 
-    res.json(await turn.toPostObj());
+    res.json({
+      success: true,
+      content: await turn.toPostObj()
+    });
   } catch(e) {
     console.error(e);
-    res.json(e);
+    res.json({
+      success: false,
+      content: await turn.toPostObj()
+    });
   }
 });
 
@@ -50,15 +69,21 @@ router.get('/force-finish', async function(req, res) {
     var user = await models.User.find({where: {name: req.user.name}});
     var player = await user.getPlayer();
     var turn = await player.getCurrentTurn();
-    var result = await turn.finish(true);
+    var turn_obj = await turn.finish(true);
 
     var newTurn = await models.Turn.create({status: 'running'});
     await player.addTurn(newTurn);
 
-    res.json(await result);
+    res.json({
+      success: true,
+      content: turn_obj
+    });
   } catch(e) {
     console.error(e);
-    res.json(e);
+    res.json({
+      success: false,
+      content: await turn.toPostObj()
+    });
   }
 });
 

@@ -5,7 +5,10 @@ var router = express.Router();
 router.get('/main', async function(req, res) {
   var user = await models.User.find({where: {name: req.user.name}});
   var player = await user.getPlayer();
-  res.json(player);
+  res.json({
+    success: true,
+    content: player
+  });
 });
 
 router.get('/all', async function(req, res) {
@@ -13,7 +16,10 @@ router.get('/all', async function(req, res) {
   console.log(uid);
   var players = (await models.Player.all()).filter(p => p.UserId != uid);
 
-  res.json(players);
+  res.json({
+    success: true,
+    content: players
+  });
 });
 
 module.exports = router;

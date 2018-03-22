@@ -6,7 +6,10 @@ game.Net = {
       this.reqQueue.push(() => {
         this.sendRequest(type, addr, content)
           .then((response) => {
-            resolve(response);
+            if (response.success)
+              resolve(response.content);
+            else
+              reject(response.content);
           })
           .then(() => {
             this.reqQueue.shift();
