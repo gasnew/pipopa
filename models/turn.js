@@ -18,35 +18,40 @@ module.exports = function(sequelize, DataTypes) {
 
   Turn.protFuncs = function(models) {
     Turn.prototype.integrateAction = function(action) {
-      return new Promise((resolve, reject) => {
-        this.validateAction(action)
-        .then(result => {
-          models.Action.create(action)
-          .then(a => this.addAction(a))
-          .then(t => resolve(this.toPostObj()));
-        })
-        .catch(result => {
-          reject("INVALID ACTION");
-        });
+      return new Promise(async (resolve, reject) => {
+        try {
+          await models.sequelize.transaction(async () => {
+            await this.validateAction(action);
+            await this.addAction(await models.Action.create(action));
+            await this.applyAction(action);
+
+            resolve(this.toPostObj());
+          });
+        } catch(e) {
+          reject(e);
+        }
       });
     };
 
     Turn.prototype.validateAction = function(a) {
-      return new Promise((resolve, reject) => {
-        this.simulateTurn()
-        .then(result => {
-          this.simulateAction(result, a)
-          .then(r => resolve(r))
-          .catch(e => reject(e));
-        })
-        .catch(result => {
+      return new Promise(async (resolve, reject) => {
+        try {
+          var sResult = await this.simulate();
+          try {
+            var aResult = await this.simulateAction(sResult.state, a);
+            resolve(aResult);
+          } catch(e) {
+            // INVALID ACTION
+            reject(e);
+          }
+        } catch(e) {
           // GAME STATE CHANGED SINCE LAST ACTION
-          reject(result);
-        });
+          reject(e);
+        }
       });
     };
 
-    Turn.prototype.simulateTurn = function() {
+    Turn.prototype.simulate = function() {
       var result = {
         state: {},
         error: null,
@@ -71,14 +76,30 @@ module.exports = function(sequelize, DataTypes) {
       });
     };
 
+    Turn.prototype.applyAction = async function(a) {
+      if (a.type == 'move') {
+        var player = await this.getPlayer();
+        player.x = a.content.toTile.x;
+        player.y = a.content.toTile.y;
+        player.save();
+      } else {
+        throw new Error('No action of type' + a.type);
+      }
+    };
+
     Turn.prototype.toPostObj = function() {
       return new Promise((resolve, reject) => {
         this.getActions()
         .then(actions => {
-          action_values = actions.map(a => a.dataValues);
+          var action_values = actions.map(a => a.dataValues);
           resolve(action_values);
         });
       });
+    };
+
+    Turn.prototype.finish = function() {
+      this.status = 'done';
+      this.save();
     };
   };
 

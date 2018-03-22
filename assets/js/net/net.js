@@ -5,15 +5,15 @@ game.Net = {
     return new Promise((resolve, reject) => {
       this.reqQueue.push(() => {
         this.sendRequest(type, addr, content)
-        .then((response) => {
-          resolve(response);
-        })
-        .then(() => {
-          this.reqQueue.shift();
-          if (this.reqQueue.length > 0) {
-            this.reqQueue[0]();
-          }
-        });
+          .then((response) => {
+            resolve(response);
+          })
+          .then(() => {
+            this.reqQueue.shift();
+            if (this.reqQueue.length > 0) {
+              this.reqQueue[0]();
+            }
+          });
       });
 
       if (this.reqQueue.length === 1) {
@@ -24,7 +24,7 @@ game.Net = {
 
   sendRequest: function(type, addr, content) {
     return new Promise((resolve, reject) => {
-      xhttp = new XMLHttpRequest();
+      var xhttp = new XMLHttpRequest();
       xhttp.onreadystatechange = this.buildRequestResponse(resolve, reject);
       xhttp.open(type, window.location.href + addr, true);
 
@@ -66,31 +66,40 @@ game.Net = {
   },
 
   getServerState: function() {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       var state = {};
-      this.getPlayers()
-      .then(p => {
-        state.entities = {
-          players: p,
-        };
+      var player = await this.getPlayer();
+      var players = await this.getPlayers();
 
-        resolve(state);
-      });
+      state.entities = {
+        mainPlayer: player,
+        players: players,
+      };
+
+      resolve(state);
     });
   },
 
-  getPlayers: function() {
-    return new Promise((resolve, reject) => {
-      this.get('players/all').then(p_data => {
-        resolve(p_data.map(p => {
-          var x = p.x;
-          var y = p.y;
-          player = Object.create(game.entities.Player);
+  getPlayer: async function() {
+    var response = await this.get('players/main');
+    var x = response.x;
+    var y = response.y;
+    var player = Object.create(game.entities.Player);
 
-          //TODO add tile to init when tile in server
-          return player.init(x, y, null);
-        }));
-      });
+    return player.init(x, y, null);
+  },
+
+  getPlayers: function() {
+    return new Promise(async (resolve, reject) => {
+      var response = await this.get('players/all');
+      resolve(response.map(p => {
+        var x = p.x;
+        var y = p.y;
+        var player = Object.create(game.entities.Player);
+
+        //TODO add tile to init when tile in server
+        return player.init(x, y, null);
+      }));
     });
   },
 
@@ -99,7 +108,7 @@ game.Net = {
   },
 
   submitTurn: function() {
-    console.log('youdidityay');
+    return this.get('turns/submit');
   },
 };
 

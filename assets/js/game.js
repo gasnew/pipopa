@@ -1,5 +1,6 @@
 var game = {
   init: (state) => {
+    console.log(state);
     game.land.init(50, 50);
     game.entities.init(game.land, state.entities);
     game.hud.init(game.land, game.entities, game.draw.canvas.cursor);
@@ -12,6 +13,7 @@ var game = {
     game.hud.update();
 
     game.draw.land(game.land.tiles);
+    game.draw.entities.players(game.entities.players);
     game.draw.entities.player(game.entities.player);
   },
 };

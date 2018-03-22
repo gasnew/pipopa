@@ -30,8 +30,13 @@
 
 	<!-- Funny methods. -->
 	<script type='text/javascript'>
-	  function submitTurn() {
-            game.Net.submitTurn();
+	  async function submitTurn() {
+            try {
+	      game.Net.submitTurn();
+	      console.log('Turn submitted!');
+	    } catch(e) {
+	      console.error(e);
+	    }
 	  }
 	</script>
 	

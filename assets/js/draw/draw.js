@@ -21,7 +21,7 @@ game.draw = {
   },
 
   _tile: function(tile, color = 'green') {
-    ctx = this.context;
+    var ctx = this.context;
 
     var ts = this.TILE_SIZE;
     var t = tile;
@@ -38,6 +38,6 @@ game.draw = {
       ctx.fillStyle = color;
       draw();
     }
-	}
+  }
 };
 
