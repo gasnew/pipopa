@@ -1,0 +1,11 @@
+{
+  "movement": {
+    "image": "movement_buff.png"
+  },
+  "doubleEffect": {
+    "image": "times_two.png",
+    "effects": [
+      "doubleAllAbove"
+    ]
+  }
+}

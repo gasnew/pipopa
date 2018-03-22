@@ -1,0 +1,9 @@
+{
+  "berry": {
+    "image": "berry.png",
+    "buffs": {
+      "name": "movement",
+      "amount": 4
+    }
+  }
+}
