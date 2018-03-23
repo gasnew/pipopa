@@ -1,5 +1,6 @@
 game.entities.Player = {
-  init: function(x, y, tile) {
+  init: function(name, x, y, tile) {
+    this.name = name;
     this.x = x;
     this.y = y;
     this.tile = tile;

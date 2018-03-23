@@ -25,6 +25,18 @@ game.Net = {
     });
   },
 
+  addRequestNoQueue: function(type, addr, content = {}) {
+    return new Promise((resolve, reject) => {
+      this.sendRequest(type, addr, content)
+        .then((response) => {
+          if (response.success)
+            resolve(response.content);
+          else
+            reject(response.content);
+        });
+    });
+  },
+
   sendRequest: function(type, addr, content) {
     return new Promise((resolve, reject) => {
       var xhttp = new XMLHttpRequest();
@@ -48,8 +60,11 @@ game.Net = {
     return this.addRequest('POST', addr, content);
   },
 
-  get: function(addr) {
-    return this.addRequest('GET', addr);
+  get: function(addr, noQueue=false) {
+    if (noQueue)
+      return this.addRequestNoQueue('GET', addr);
+    else
+      return this.addRequest('GET', addr);
   },
 
   buildRequestResponse: function(resolve, reject) {
@@ -85,11 +100,12 @@ game.Net = {
 
   getPlayer: async function() {
     var response = await this.get('players/main');
+    var name = response.name;
     var x = response.x;
     var y = response.y;
     var player = Object.create(game.entities.Player);
 
-    player.init(x, y, null);
+    player.init(name, x, y, null);
     player.turn = await this.getTurn();
     player.fastForward();
 
@@ -100,12 +116,13 @@ game.Net = {
     return new Promise(async (resolve, reject) => {
       var response = await this.get('players/all');
       resolve(response.map(p => {
+        var name = p.name;
         var x = p.x;
         var y = p.y;
         var player = Object.create(game.entities.Player);
 
         //TODO add tile to init when tile in server
-        return player.init(x, y, null);
+        return player.init(name, x, y, null);
       }));
     });
   },
@@ -124,6 +141,10 @@ game.Net = {
 
   newTurn: function() {
     return this.get('turns/force-finish');
+  },
+
+  subscribeTurnUpdates: function() {
+    return this.get('turns/subscribe-turn-updates', true);
   },
 };
 

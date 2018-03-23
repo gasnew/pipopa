@@ -2,6 +2,22 @@ var models = require('../models');
 var express = require('express');
 var router = express.Router();
 
+var turnWatcher = {
+  subscriptions: [],
+
+  subscribe: function(sub) {
+    this.subscriptions.push(sub);
+  },
+
+  dispatch: function(res) {
+    for (var sub of this.subscriptions) {
+      sub(res);
+    }
+
+    this.subscriptions.length = 0;
+  },
+};
+
 router.post('/new-action', async function(req, res) {
   try {
     var user = await models.User.find({where: {name: req.user.name}});
@@ -35,6 +51,14 @@ router.get('/submit', async function(req, res) {
     res.json({
       success: true,
       content: turn_obj
+    });
+
+    turnWatcher.dispatch({
+      success: true,
+      content: {
+        turn: turn_obj,
+        playerName: user.name
+      }
     });
   } catch(e) {
     console.error(e);
@@ -85,6 +109,12 @@ router.get('/force-finish', async function(req, res) {
       content: await turn.toPostObj()
     });
   }
+});
+
+router.get('/subscribe-turn-updates', function(req, res) {
+  turnWatcher.subscribe((result) => {
+    res.json(result);
+  });
 });
 
 module.exports = router;

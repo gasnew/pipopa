@@ -36,6 +36,7 @@
             var res = await game.Net.submitTurn();
             console.log('Turn submitted!');
             console.log(res);
+            game.entities.player.turn = [];
 	  }
 	  async function logTurn() {
             var res = await game.Net.getTurn();
