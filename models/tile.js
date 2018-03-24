@@ -1,5 +1,3 @@
-var models = require('../models');
-
 module.exports = function(sequelize, DataTypes) {
   var Tile = sequelize.define('Tile', {
     x: {
@@ -13,6 +11,7 @@ module.exports = function(sequelize, DataTypes) {
   });
 
   Tile.associate = function(models) {
+    Tile.belongsTo(models.Chunk);
     Tile.hasOne(models.Item, {
       foreignKey: 'containerId',
       constraints: false,
