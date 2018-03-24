@@ -1,4 +1,4 @@
-game.land = {
+game.Chunk = {
   tiles: [],
 
   init: function(rows, cols) {

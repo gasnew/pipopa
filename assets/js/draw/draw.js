@@ -10,7 +10,7 @@ game.draw = {
     this.canvas.reset();
   },
 
-  land: function(tiles) {
+  chunk: function(tiles) {
     var b = tiles;
     for (var i = 0; i < b.length; i++) {
       var r = b[i];

@@ -1,6 +1,6 @@
 game.hud = {
-  init: function(land, entities, cursor) {
-    this.land = land;
+  init: function(chunk, entities, cursor) {
+    this.chunk = chunk;
     this.entities = entities;
     this.cursor = cursor;
 
@@ -23,14 +23,14 @@ game.hud = {
     var col = this.cursor.column;
 
     if (this.highTile) this.highTile.unhighlight();
-    this.highTile = this.land.tileAt(row, col);
+    this.highTile = this.chunk.tileAt(row, col);
     if (this.highTile) this.highTile.highlight();
   },
 
   getClickedTile: function() {
     var db = this.downTile;
     var hb = this.highTile;
-    var land = this.land;
+    var chunk = this.chunk;
     var c = this.cursor;
 
     if (!db && c.down)

@@ -1,9 +1,9 @@
 var game = {
   init: function (state) {
     console.log(state);
-    game.land.init(50, 50);
-    game.entities.init(game.land, state.entities);
-    game.hud.init(game.land, game.entities, game.draw.canvas.cursor);
+    game.chunk = state.chunk;
+    game.entities.init(game.chunk, state.entities);
+    game.hud.init(game.chunk, game.entities, game.draw.canvas.cursor);
     game.draw.init();
 
     this.subscribeTurnUpdates();
@@ -26,7 +26,7 @@ var game = {
 
     game.hud.update();
 
-    game.draw.land(game.land.tiles);
+    game.draw.chunk(game.chunk.tiles);
     game.draw.entities.players(game.entities.players);
     game.draw.entities.player(game.entities.player);
   },

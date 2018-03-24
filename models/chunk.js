@@ -1,14 +1,14 @@
 module.exports = function(sequelize, DataTypes) {
   var Chunk = sequelize.define('Chunk', {
-    rows: {
+    height: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      defaultValue: 3,
+      defaultValue: 50,
     },
-    cols: {
+    width: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      defaultValue: 5,
+      defaultValue: 50,
     },
   });
 

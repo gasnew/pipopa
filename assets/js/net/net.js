@@ -86,16 +86,32 @@ game.Net = {
   getServerState: function() {
     return new Promise(async (resolve, reject) => {
       var state = {};
+
+      var chunk = await this.getChunk();
+      state.chunk = chunk;
+
       var player = await this.getPlayer();
       var players = await this.getPlayers();
 
       state.entities = {
+        chunk: chunk,
         mainPlayer: player,
         players: players,
       };
 
       resolve(state);
     });
+  },
+
+  getChunk: async function() {
+    var response = await this.get('chunks/main');
+    var height = response.height;
+    var width = response.width;
+    var chunk = Object.create(game.Chunk);
+
+    chunk.init(height, width);
+
+    return chunk;
   },
 
   getPlayer: async function() {
