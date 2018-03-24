@@ -1,4 +1,3 @@
-var models = require('../models');
 var math = require('../lib/math');
 
 module.exports = function(sequelize, DataTypes) {

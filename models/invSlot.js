@@ -1,27 +1,26 @@
-var models = require('../models');
-
 module.exports = function(sequelize, DataTypes) {
-  var Tile = sequelize.define('Tile', {
-    x: {
+  var InvSlot = sequelize.define('InvSlot', {
+    row: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    y: {
+    col: {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
   });
 
-  Tile.associate = function(models) {
-    Tile.hasOne(models.Item, {
+  InvSlot.associate = function(models) {
+    InvSlot.belongsTo(models.Inventory);
+    InvSlot.hasOne(models.Item, {
       foreignKey: 'containerId',
       constraints: false,
       scope: {
-        container: 'Tile'
+        container: 'InvSlot'
       }
     });
   };
 
-  return Tile;
+  return InvSlot;
 };
 

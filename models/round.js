@@ -1,5 +1,3 @@
-var models = require('../models');
-
 module.exports = function(sequelize, DataTypes) {
   var Round = sequelize.define('Round', {
   });

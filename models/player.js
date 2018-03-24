@@ -23,6 +23,7 @@ module.exports = function(sequelize, DataTypes) {
   Player.associate = function(models) {
     Player.hasMany(models.Turn);
     Player.belongsTo(models.User);
+    Player.hasOne(models.Inventory);
   };
 
   return Player;
