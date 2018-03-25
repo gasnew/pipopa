@@ -2,7 +2,7 @@
 
 (() => {
   // GET SERVER STATE
-  game.Net.getServerState().then(state => {
+  game.Net.State.getServerState().then(state => {
     game.init(state);
 
     window.setInterval(function() {

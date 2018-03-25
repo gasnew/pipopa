@@ -1,9 +1,10 @@
 game.entities.Player = {
-  init: function(name, x, y, tile) {
+  init: function(name, x, y, tile, inventory) {
     this.name = name;
     this.x = x;
     this.y = y;
     this.tile = tile;
+    this.inventory = inventory;
     this.turn = null;
 
     return this;

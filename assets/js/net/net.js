@@ -83,66 +83,6 @@ game.Net = {
     };
   },
 
-  getServerState: function() {
-    return new Promise(async (resolve, reject) => {
-      var state = {};
-
-      var chunk = await this.getChunk();
-      state.chunk = chunk;
-
-      var player = await this.getPlayer();
-      var players = await this.getPlayers();
-
-      state.entities = {
-        chunk: chunk,
-        mainPlayer: player,
-        players: players,
-      };
-
-      resolve(state);
-    });
-  },
-
-  getChunk: async function() {
-    var response = await this.get('chunks/main');
-    var height = response.height;
-    var width = response.width;
-    var chunk = Object.create(game.Chunk);
-
-    chunk.init(height, width);
-
-    return chunk;
-  },
-
-  getPlayer: async function() {
-    var response = await this.get('players/main');
-    var name = response.name;
-    var x = response.x;
-    var y = response.y;
-    var player = Object.create(game.entities.Player);
-
-    player.init(name, x, y, null);
-    player.turn = await this.getTurn();
-    player.fastForward();
-
-    return player;
-  },
-
-  getPlayers: function() {
-    return new Promise(async (resolve, reject) => {
-      var response = await this.get('players/all');
-      resolve(response.map(p => {
-        var name = p.name;
-        var x = p.x;
-        var y = p.y;
-        var player = Object.create(game.entities.Player);
-
-        //TODO add tile to init when tile in server
-        return player.init(name, x, y, null);
-      }));
-    });
-  },
-
   postAction: function(actionRequest) {
     return this.post('turns/new-action', actionRequest);
   },
