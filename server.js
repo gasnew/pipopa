@@ -71,7 +71,7 @@ function ensureAuthenticated(req, res, next) {
 app.listen(app.get('port'));
 
 //We will be creating these two files shortly
-funct = require('./auth_funcs.js'); //funct file contains our helper functions for our Passport and database work
+var funct = require('./auth_funcs.js'); //funct file contains our helper functions for our Passport and database work
 
 //===============PASSPORT===============
 
@@ -100,10 +100,10 @@ funct = require('./auth_funcs.js'); //funct file contains our helper functions f
  // Use the LocalStrategy within Passport to register/"signup" users.
  passport.use('local-signup', new LocalStrategy(
    {passReqToCallback : true}, //allows us to pass back the request to the callback
-   function(req, name, password, done) {
+   async function(req, name, password, done) {
      console.log(name);
-     funct.localReg(name, password)
-     .then(function (user) {
+     var user = await funct.localReg(name, password);
+     try {
        if (user) {
          console.log("REGISTERED: " + user.name);
          req.session.success = 'You are successfully registered and logged in ' + user.name + '!';
@@ -114,10 +114,9 @@ funct = require('./auth_funcs.js'); //funct file contains our helper functions f
          req.session.error = 'That name is already in use, please try a different one.'; //inform user could not log them in
          done(null, user);
        }
-     })
-     .fail(function (err){
+     } catch(err) {
        console.log(err.body);
-     });
+     };
    }
  ));
 

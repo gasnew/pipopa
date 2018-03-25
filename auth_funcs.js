@@ -3,39 +3,36 @@ var bcrypt = require('bcryptjs'),
   models = require('./models');
 
 //used in local-signup strategy
-exports.localReg = function (name, password) {
+exports.localReg = async function (name, password) {
   var deferred = Q.defer();
 
   console.log(name);
   //check if name is already assigned in our database
-  models.User.findOne({
+  var result = await models.User.findOne({
     where: {
       'name': name
     }
   })
-    .then(function (result) {
-      if (null != result) {
-        console.log('USERNAME ALREADY EXISTS:', result.name);
-        deferred.resolve(false); // name exists
-      } else  {
-        var hash = bcrypt.hashSync(password, 8);
-        var user = {
-          'name': name,
-          'password': hash,
-        };
+  if (null != result) {
+    console.log('USERNAME ALREADY EXISTS:', result.name);
+    deferred.resolve(false); // name exists
+  } else  {
+    var hash = bcrypt.hashSync(password, 8);
+    var user = {
+      'name': name,
+      'password': hash,
+    };
 
-        console.log('CREATING USER:', name);
-        models.User.create(user).then(u => {
-          return models.Player.create({UserId: u.id, x: 25, y: 25});
-        })
-          .then(p => {
-            return models.Turn.create({PlayerId: p.id, status: 'running'});
-          })
-          .then(() => {
-            deferred.resolve(user);
-          });
-      }
-    });
+    console.log('CREATING USER:', name);
+    var u = await models.User.create(user);
+    var p = await u.createPlayer({x: 25, y: 25});
+    await p.createTurn({status: 'running'});
+    var i = await p.createInventory();
+    await i.makeSlots();
+    await (await i.getAt(0, 0)).createItem({type: 'berry'});
+
+    deferred.resolve(user);
+  }
 
   return deferred.promise;
 };

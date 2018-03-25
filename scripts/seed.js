@@ -7,11 +7,11 @@ var models = require('../models');
   const WIDTH = 50;
 
   var chunk = await models.Chunk.create({rows: HEIGHT, cols: WIDTH});
-  for (var x = 0; x < WIDTH; x++) {
-    for (var y = 0; y < HEIGHT; y++) {
-      await chunk.createTile({x: x, y: y});
-    }
-  }
+  // for (var x = 0; x < WIDTH; x++) {
+  //   for (var y = 0; y < HEIGHT; y++) {
+  //     await chunk.createTile({x: x, y: y});
+  //   }
+  // }
 
   console.log('ALL DONE!!');
   process.exit();
