@@ -8,11 +8,12 @@ game.hud = {
     this.downTile = null;
 
     this.windows = {
-      inv: game.hud.WindowBuilder.start()
+      inv: game.hud.WindowBuilder.start({x: 100, y: 50})
         .addTitle({name: game.entities.player.name})
         .addInventory({inv: game.entities.player.inventory})
         .finish()
     };
+    console.log(this.windows);
   },
 
   update: function() {

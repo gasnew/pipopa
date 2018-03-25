@@ -1,5 +1,7 @@
 game.hud.Window = {
-  init: function() {
+  init: function({x = 0, y = 0}) {
+    this.x = x;
+    this.y = y;
     this.panes = [];
     this.height = null;
     this.width = null;
@@ -7,9 +9,13 @@ game.hud.Window = {
 
   addPane: function(components) {
     var pane = Object.create(game.hud.Pane);
-    pane.init({components: components});
+    pane.init(components);
 
     this.panes.push(pane);
+  },
+
+  getBottom: function() {
+    return this.y + this.getHeight();
   },
 
   getHeight: function() {

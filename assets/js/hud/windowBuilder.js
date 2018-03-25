@@ -1,51 +1,56 @@
 game.hud.WindowBuilder = {
-  start: function() {
+  start: function({x = 0, y = 0}) {
     this.window = Object.create(game.hud.Window);
-    this.window.init();
+    this.window.init({x: x, y: y});
 
     return this;
   },
 
   addTitle: function({name = 'Default Title'} = {}) {
-    this.window.addPane({
-      components: [
-        {
-          type: 'text',
-          text: name,
-          height: game.draw.TILE_SIZE,
-        },
-      ],
+    var cell = Object.create(game.hud.Cell);
+    cell.init({
+      height: game.draw.TILE_SIZE,
+      width: null,
+      content: {text: name, size: game.draw.TILE_SIZE},
+      onDrawContent: (text, x, y) => game.draw.text(text, x, y),
     });
+    this.window.addPane({cells: [cell]});
 
     return this;
   },
 
   addInventory: function({inv = {rows: 0, cols: 0}} = {}) {
-    var presRows = Array(inv.rows);
+    var cellRows = Array(inv.rows);
     for (var r = 0; r < inv.rows; r++) {
-      presRows[r] = Array(inv.cols);
+      cellRows[r] = Array(inv.cols);
       for (var c = 0; c < inv.cols; c++) {
         var slot = inv.slots[r][c];
-        var pres = Object.create(game.hud.Pressable);
-        pres.init({
+        var cell = Object.create(game.hud.Cell);
+        cell.init({
+          x: 0,
+          y: 0,
           height: game.draw.TILE_SIZE,
           width: game.draw.TILE_SIZE,
           onClick: () => {
             if (!game.canvas.cursor.hasItem())
               game.canvas.cursor.setItem(slot.item);
-            else if (pres.empty())
-              pres.setChild(slot.item);
+            else if (cell.empty())
+              cell.setContent(game.canvas.cursor.getItem());
           },
-          onDrawChild: game.draw.item,
+          onDrawContent: (item, x, y) => game.draw.item(item, x, y),
         });
 
-        presRows[r][c] = pres;
+        cell.setContent(slot.item);
+
+        cellRows[r][c] = cell;
       }
     }
 
-    for (var presRow of presRows) {
+    for (var cellRow of cellRows) {
       this.window.addPane({
-        components: presRow,
+        x: 0,
+        y: this.window.getBottom() - this.window.y,
+        cells: cellRow,
       });
     }
 

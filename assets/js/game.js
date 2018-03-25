@@ -29,6 +29,7 @@ var game = {
     game.draw.chunk(game.chunk.tiles);
     game.draw.entities.players(game.entities.players);
     game.draw.entities.player(game.entities.player);
+    game.draw.hud.windows(game.hud.windows);
   },
 };
 
