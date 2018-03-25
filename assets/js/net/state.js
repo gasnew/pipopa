@@ -59,9 +59,7 @@ game.Net.State = {
   },
 
   getInventory: async function() {
-    console.log('yoyoyo');
     var response = await game.Net.get('inventories/main');
-    console.log(response);
     var rows = response.rows;
     var cols = response.cols;
     var slots = new Array(rows);
@@ -83,7 +81,6 @@ game.Net.State = {
     var slot = Object.create(game.hud.Slot);
     slot.init(r, c);
 
-    console.log(data);
     var slotData = data.find(s => s.row === r && s.col === c);
     if (slotData.Item)
       slot.setItem(this.makeItem(slotData.Item));

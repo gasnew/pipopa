@@ -6,14 +6,21 @@ game.hud = {
 
     this.highTile = null;
     this.downTile = null;
+
+    this.windows = {
+      inv: game.hud.WindowBuilder.start()
+        .addTitle({name: game.entities.player.name})
+        .addInventory({inv: game.entities.player.inventory})
+        .finish()
+    };
   },
 
   update: function() {
     this.highlightTile();
     var clickedTile = this.getClickedTile();
 
-    // if (clickedTile && game.Math.tilesTo(this.entities.player.tile, clickedTile) === 1) {
-    if (clickedTile) {
+    if (clickedTile
+        && game.Math.tilesTo(this.entities.player.tile, clickedTile) === 1) {
       this.entities.player.moveTo(clickedTile);
     }
   },
@@ -30,7 +37,6 @@ game.hud = {
   getClickedTile: function() {
     var db = this.downTile;
     var hb = this.highTile;
-    var chunk = this.chunk;
     var c = this.cursor;
 
     if (!db && c.down)
