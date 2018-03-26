@@ -24,18 +24,21 @@ game.hud.WindowBuilder = {
     for (var r = 0; r < inv.rows; r++) {
       cellRows[r] = Array(inv.cols);
       for (var c = 0; c < inv.cols; c++) {
-        var slot = inv.slots[r][c];
-        var cell = Object.create(game.hud.Cell);
+        let slot = inv.slots[r][c];
+        let cell = Object.create(game.hud.Cell);
         cell.init({
           x: 0,
           y: 0,
           height: game.draw.TILE_SIZE,
           width: game.draw.TILE_SIZE,
-          onClick: () => {
-            if (!game.canvas.cursor.hasItem())
-              game.canvas.cursor.setItem(slot.item);
-            else if (cell.empty())
-              cell.setContent(game.canvas.cursor.getItem());
+          onDown: function() {
+            if (!game.draw.canvas.cursor.getItem()) {
+              game.draw.canvas.cursor.setItem(this.content);
+              this.setContent(null);
+            } else if (this.empty()) {
+              this.setContent(game.draw.canvas.cursor.getItem());
+              game.draw.canvas.cursor.setItem(null);
+            }
           },
           onDrawContent: (item, x, y) => game.draw.item(item, x, y),
         });

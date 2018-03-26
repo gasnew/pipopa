@@ -10,8 +10,25 @@ game.hud.Window = {
   addPane: function(components) {
     var pane = Object.create(game.hud.Pane);
     pane.init(components);
+    this._addCellDownListeners(pane, components.cells);
 
     this.panes.push(pane);
+  },
+
+  _addCellDownListeners: function(pane, cells) {
+    for (let cell of cells) {
+      var c = game.draw.canvas.cursor;
+      c.downEventTarget.addEventListener('cursordown', () => {
+        var rect = {
+          x: this.x + pane.x + cell.x,
+          y: this.y + pane.y + cell.y,
+          height: cell.height,
+          width: cell.width,
+        };
+        if (c.inRect(rect))
+          cell.onDown();
+      });
+    }
   },
 
   getBottom: function() {

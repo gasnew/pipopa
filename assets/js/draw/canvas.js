@@ -8,8 +8,24 @@ game.draw.canvas = {
     get column() {
       return Math.floor(this.x / game.draw.TILE_SIZE);
     },
+    inRect: function(r) {
+      return this.x >= r.x &&
+        this.y >= r.y &&
+        this.x < r.x + r.width &&
+        this.y < r.y + r.height;
+    },
 
     down: false,
+    downEvent: new Event('cursordown'),
+    downEventTarget: new EventTarget(),
+
+    item: null,
+    getItem: function() {
+      return this.item;
+    },
+    setItem: function(item) {
+      this.item = item;
+    },
   },
 
   canvas: document.getElementById('canvas'),
@@ -24,6 +40,7 @@ game.draw.canvas = {
     });
     this.canvas.addEventListener('mousedown', (e) => {
       this.cursor.down = true;
+      this.cursor.downEventTarget.dispatchEvent(this.cursor.downEvent);
     });
     this.canvas.addEventListener('mouseup', (e) => {
       this.cursor.down = false;

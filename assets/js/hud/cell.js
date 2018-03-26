@@ -4,7 +4,7 @@ game.hud.Cell = {
     y = 0,
     height = game.draw.TILE_SIZE,
     width = game.draw.TILE_SIZE,
-    onClick = () => {},
+    onDown = () => {},
     onDrawContent = () => {},
     content = null,
   } = {}) {
@@ -12,7 +12,7 @@ game.hud.Cell = {
     this.y = y;
     this.height = height;
     this.width = width;
-    this.onClick = onClick;
+    this.onDown = onDown;
     this.onDrawContent = onDrawContent;
     this.content = content;
 
