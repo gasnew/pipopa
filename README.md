@@ -1,7 +1,9 @@
 # gl
+Good luck
 
 ## Installation
 1. [Install NVM](https://github.com/creationix/nvm).
+
 *You may need to restart the terminal or run some special commands to use `nvm` (commands should be provided upon install).*
 2. Install Node and NPM
 ```bash
@@ -31,3 +33,7 @@ node scripts/seed.js
 ```bash
 node app.js
 ```
+
+9. ???
+
+10. Profit! (go bananas in `assets/objects`)
