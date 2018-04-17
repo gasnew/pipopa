@@ -32,12 +32,12 @@ game.hud.WindowBuilder = {
           height: game.draw.TILE_SIZE,
           width: game.draw.TILE_SIZE,
           onDown: function() {
-            if (!game.draw.canvas.cursor.getItem()) {
-              game.draw.canvas.cursor.setItem(this.content);
+            if (!game.draw.canvas.cursor.content) {
+              game.draw.canvas.cursor.setContent(this.content);
               this.setContent(null);
             } else if (this.empty()) {
-              this.setContent(game.draw.canvas.cursor.getItem());
-              game.draw.canvas.cursor.setItem(null);
+              this.setContent(game.draw.canvas.cursor.content);
+              game.draw.canvas.cursor.setContent(null);
             }
           },
           onDrawContent: (item, x, y) => game.draw.item(item, x, y),

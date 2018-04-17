@@ -19,13 +19,15 @@ game.draw.canvas = {
     downEvent: new Event('cursordown'),
     downEventTarget: new EventTarget(),
 
-    item: null,
-    getItem: function() {
-      return this.item;
+    content: null,
+    setContent: function(content) {
+      this.content = content;
     },
-    setItem: function(item) {
-      this.item = item;
+    empty: function() {
+      return this.content == null;
     },
+
+    onDrawContent: (content, x, y) => game.draw.item(content, x, y),
   },
 
   canvas: document.getElementById('canvas'),

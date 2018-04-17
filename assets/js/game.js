@@ -30,6 +30,7 @@ var game = {
     game.draw.entities.players(game.entities.players);
     game.draw.entities.player(game.entities.player);
     game.draw.hud.windows(game.hud.windows);
+    game.draw.hud.cursor(game.draw.canvas.cursor);
   },
 };
 

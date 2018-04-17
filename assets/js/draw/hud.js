@@ -21,5 +21,11 @@ game.draw.hud = {
       }
     }
   },
+
+  cursor: function(cursor) {
+    if (!cursor.empty()) {
+      cursor.onDrawContent(cursor.content, cursor.x, cursor.y);
+    }
+  },
 };
 
