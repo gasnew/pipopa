@@ -23,7 +23,7 @@ game.entities.Player = {
   transferFromContainer: null,
   transferThroughContainer: null,
   startTransfer: function({from, through}) {
-    through.setContent(from.content);
+    through.setContent(from.getContent());
     from.setContent(null);
 
     this.transferFromContainer = from;
@@ -34,14 +34,18 @@ game.entities.Player = {
     return this.transferFromContainer != null;
   },
   completeTransfer: function({to}) {
-    this.transferFromContainer.setContent(this.transferThroughContainer.content);
-    this.transferThroughContainer.setContent(null);
+    var from = this.transferFromContainer;
+    var through = this.transferThroughContainer;
+
+    from.setContent(through.getContent());
+    through.setContent(null);
 
     console.log('transfer completed');
     var transferRequest = Object.create(game.Action.TransferRequest);
     transferRequest.init({
-      fromContainer: this.transferFromContainer,
-      toContainer: to
+      fromContainer: from,
+      toContainer: to,
+      item: from.getContent()
     });
 
     this.applyAction(transferRequest);
@@ -74,7 +78,7 @@ game.entities.Player = {
       var from = action.content.fromContainer;
       var to = action.content.toContainer;
 
-      to.setContent(from.content);
+      to.setContent(from.getContent());
       from.setContent(null);
     }
   },
@@ -90,7 +94,7 @@ game.entities.Player = {
       var from = action.content.fromContainer;
       var to = action.content.toContainer;
 
-      from.setContent(to.content);
+      from.setContent(to.getContent());
       to.setContent(null);
     }
   },

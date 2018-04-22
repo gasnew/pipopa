@@ -1,5 +1,6 @@
 game.hud.Cell = {
   init: function({
+    id = null,
     x = 0,
     y = 0,
     height = game.draw.TILE_SIZE,
@@ -7,22 +8,27 @@ game.hud.Cell = {
     onDown = () => {},
     onDrawContent = () => {},
     content = null,
+    getContent = function() {
+      return this.content;
+    },
+    setContent = function(content) {
+      this.content = content;
+    },
   } = {}) {
+    this.id = id;
     this.x = x;
     this.y = y;
     this.height = height;
     this.width = width;
     this.onDown = onDown;
     this.onDrawContent = onDrawContent;
-    this.content = content;
-  },
-
-  setContent: function(content) {
+    this.getContent = getContent;
+    this.setContent = setContent;
     this.content = content;
   },
 
   empty: function() {
-    return this.content == null;
+    return this.getContent() == null;
   },
 };
 

@@ -91,7 +91,7 @@ game.Net.State = {
       }
     }
 
-    var inv = Object.create(game.hud.Inventory);
+    var inv = Object.create(game.Inventory);
     inv.init(rows, cols, slots);
 
     return inv;
@@ -100,9 +100,10 @@ game.Net.State = {
   makeSlot: function(data, r, c) {
     var slotData = data.find(s => s.row === r && s.col === c);
 
-    var slot = {};
+    var slot = Object.create(game.Inventory.InvSlot);
+    slot.init(slotData.id);
     if (slotData.Item)
-      slot.item = this.makeItem(slotData.Item);
+      slot.setContent(this.makeItem(slotData.Item));
 
     return slot;
   },

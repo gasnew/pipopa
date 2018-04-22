@@ -1,4 +1,4 @@
-game.hud.Inventory = {
+game.Inventory = {
   init: function(rows, cols, slots) {
     this.rows = rows;
     this.cols = cols;

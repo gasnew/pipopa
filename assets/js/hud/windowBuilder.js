@@ -27,12 +27,20 @@ game.hud.WindowBuilder = {
         let slot = inv.slots[r][c];
         let cell = Object.create(game.hud.Cell);
         cell.init({
+          id: slot.id,
           x: 0,
           y: 0,
           height: game.draw.TILE_SIZE,
           width: game.draw.TILE_SIZE,
+          getContent: function() {
+            return slot.getContent();
+          },
+          setContent: function(content) {
+            slot.setContent(content);
+          },
+
           onDown: function() {
-            if (!game.draw.canvas.cursor.content) {
+            if (!this.empty() && game.draw.canvas.cursor.empty()) {
               game.entities.player.startTransfer({
                 from: this,
                 through: game.draw.canvas.cursor

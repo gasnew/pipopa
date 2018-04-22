@@ -20,12 +20,14 @@ game.draw.canvas = {
     downEventTarget: new EventTarget(),
 
     content: null,
+    getContent: function() {
+      return this.content;
+    },
     setContent: function(content) {
       this.content = content;
-      
     },
     empty: function() {
-      return this.content == null;
+      return this.getContent() == null;
     },
 
     onDrawContent: (content, x, y) => game.draw.item(content, x, y),

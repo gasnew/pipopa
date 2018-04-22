@@ -14,7 +14,7 @@ game.draw.hud = {
             if (!cell.empty()) {
               var x = w.x + pane.x + cell.x;
               var y = w.y + pane.y + cell.y;
-              cell.onDrawContent(cell.content, x, y);
+              cell.onDrawContent(cell.getContent(), x, y);
             }
           }
         }
@@ -24,7 +24,7 @@ game.draw.hud = {
 
   cursor: function(cursor) {
     if (!cursor.empty()) {
-      cursor.onDrawContent(cursor.content, cursor.x, cursor.y);
+      cursor.onDrawContent(cursor.getContent(), cursor.x, cursor.y);
     }
   },
 };
