@@ -1,9 +1,11 @@
 game.Tile = {
+  id: 0,
   x: 0,
   y: 0,
   highlighted: false,
 
-  init: function(x, y) {
+  init: function(id, x, y) {
+    this.id = id;
     this.x = x;
     this.y = y;
 

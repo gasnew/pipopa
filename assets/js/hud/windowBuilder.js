@@ -33,11 +33,15 @@ game.hud.WindowBuilder = {
           width: game.draw.TILE_SIZE,
           onDown: function() {
             if (!game.draw.canvas.cursor.content) {
-              game.draw.canvas.cursor.setContent(this.content);
-              this.setContent(null);
-            } else if (this.empty()) {
-              this.setContent(game.draw.canvas.cursor.content);
-              game.draw.canvas.cursor.setContent(null);
+              game.entities.player.startTransfer({
+                from: this,
+                through: game.draw.canvas.cursor
+              });
+            } else if (this.empty()
+              && game.entities.player.pendingTransfer()) {
+              game.entities.player.completeTransfer({
+                to: this
+              });
             }
           },
           onDrawContent: (item, x, y) => game.draw.item(item, x, y),

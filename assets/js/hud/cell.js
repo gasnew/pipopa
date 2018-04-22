@@ -15,7 +15,6 @@ game.hud.Cell = {
     this.onDown = onDown;
     this.onDrawContent = onDrawContent;
     this.content = content;
-
   },
 
   setContent: function(content) {

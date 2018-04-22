@@ -22,6 +22,7 @@ game.draw.canvas = {
     content: null,
     setContent: function(content) {
       this.content = content;
+      
     },
     empty: function() {
       return this.content == null;
@@ -35,16 +36,15 @@ game.draw.canvas = {
   init: function() {
     this.context = this.canvas.getContext('2d');
 
-    var that = this;
     this.canvas.addEventListener('mousemove', (e) => {
       this.cursor.x = e.clientX;
       this.cursor.y = e.clientY;
     });
-    this.canvas.addEventListener('mousedown', (e) => {
+    this.canvas.addEventListener('mousedown', () => {
       this.cursor.down = true;
       this.cursor.downEventTarget.dispatchEvent(this.cursor.downEvent);
     });
-    this.canvas.addEventListener('mouseup', (e) => {
+    this.canvas.addEventListener('mouseup', () => {
       this.cursor.down = false;
     });
 

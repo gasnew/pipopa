@@ -25,7 +25,7 @@ exports.localReg = async function (name, password) {
 
     console.log('CREATING USER:', name);
     var u = await models.User.create(user);
-    var p = await u.createPlayer({x: 25, y: 25});
+    var p = await u.createPlayer({x: 15, y: 15});
     await p.createTurn({status: 'running'});
     var i = await p.createInventory();
     await i.makeSlots();

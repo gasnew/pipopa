@@ -24,9 +24,29 @@ game.Net.State = {
     var width = response.width;
     var chunk = Object.create(game.Chunk);
 
-    chunk.init(height, width);
+    var tiles = Array(height);
+    for (var r = 0; r < height; r++) {
+      tiles[r] = Array(width);
+      for (var c = 0; c < width; c++) {
+        tiles[r][c] = this.makeTile(response.Tiles, c, r);
+      }
+    }
+
+    chunk.init(tiles);
 
     return chunk;
+  },
+
+  makeTile: function(data, x, y) {
+    var tileData = data.find(t => t.x === x && t.y === y);
+
+    var tile = Object.create(game.Tile);
+    tile.init(tileData.id, x, y);
+
+    if (tileData.Item)
+      tile.setItem(this.makeItem(tileData.Item));
+
+    return tile;
   },
 
   getPlayer: async function() {
@@ -78,12 +98,11 @@ game.Net.State = {
   },
 
   makeSlot: function(data, r, c) {
-    var slot = Object.create(game.hud.Slot);
-    slot.init(r, c);
-
     var slotData = data.find(s => s.row === r && s.col === c);
+
+    var slot = {};
     if (slotData.Item)
-      slot.setItem(this.makeItem(slotData.Item));
+      slot.item = this.makeItem(slotData.Item);
 
     return slot;
   },
