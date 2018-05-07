@@ -4,16 +4,17 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    path: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
   });
 
   Message.associate = function(models) {
     Message.belongsTo(models.User, {as: 'sender'});
-    // Message.belongsTo(models.User);
     Message.belongsTo(models.User, {as: 'recipient'});
+  };
+
+  Message.protFuncs = function(models) {
+    Message.prototype.path = function() {
+      return 'audio/' + this.id + '.wav';
+    };
   };
 
   return Message;

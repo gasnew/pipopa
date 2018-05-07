@@ -10,6 +10,21 @@ module.exports = function(sequelize, DataTypes) {
     },
   });
 
+  User.protFuncs = function(models) {
+    User.prototype.getWaitingMessages = async function() {
+      return await models.Message.all({
+        where: {
+          recipientId: this.id,
+          status: 'waiting'
+        }
+      });
+    };
+  };
+
+  User.associate = function(models) {
+    User.hasMany(models.Message);
+  };
+
   return User;
 };
 

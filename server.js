@@ -55,7 +55,7 @@ app.set('view engine', 'handlebars');
 app.use('/', routes);
 app.use(ensureAuthenticated);
 app.use('/users', users);
-// app.use('/messages', messages);
+app.use('/messages', messages);
 
 function ensureAuthenticated(req, res, next) {
     if (req.isAuthenticated()) { return next(); }

@@ -4,27 +4,29 @@ var router = express.Router();
 
 router.post('/new', async function(req, res) {
   try {
+    console.log('hey there');
     var user = await models.User.find({where: {name: req.user.name}});
     var recipient = await models.User.find({where: {name: req.body.recipient}});
 
+    if (recipient === null) {
+      throw new Error('Recipient "' + req.body.recipient + '" does not exist');
+    }
+
     // Receive message
     // {
-    //   path: '/../../..wav',
     //   recipient: 'jesse',
     // }
 
-    var path = './audio/12345.wav';
-    models.Message.create({
-      path: path,
+    await models.Message.create({
       senderId: user.id,
       recipientId: recipient.id,
+      status: 'waiting',
     });
 
     res.send('Good on ya, mate!');
   } catch(e) {
     console.error(e);
-    res.statusCode = 422;
-    res.send('Dude, not cool');
+    res.status(422).send(e.message);
   }
 });
 
@@ -42,4 +44,6 @@ router.get('/waiting', async function(req, res) {
     res.send('I\'ve made a terrible mistyachk!');
   }
 });
+
+module.exports = router;
 
