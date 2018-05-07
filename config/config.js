@@ -2,7 +2,7 @@ module.exports = {
   development: {
     username: 'root',
     password: 'my_pass',
-    database: 'gl_test',
+    database: 'pipopa',
     host: 'localhost',
     dialect: 'mysql',
 
