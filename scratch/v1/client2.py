@@ -2,7 +2,7 @@ import requests
 
 # Log in
 s = requests.session()
-url = 'http://localhost:8080'
+url = 'http://192.168.0.146:8080'
 credentials = {
   'username': 'jesse',
   'password': 'jesse',
