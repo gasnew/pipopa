@@ -63,5 +63,12 @@ router.get('/waiting', async function(req, res) {
   }
 });
 
+router.get('/download/:filename', function(req, res){
+    var filename = path.basename(req.params.filename + '.wav');
+    filename = path.resolve(__dirname + '/../public/audio', filename);
+    console.log(filename);
+    res.download(filename); // Set disposition and send it.
+});
+
 module.exports = router;
 
