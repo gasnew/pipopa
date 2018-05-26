@@ -63,11 +63,17 @@ router.get('/waiting', async function(req, res) {
   }
 });
 
-router.get('/download/:filename', function(req, res){
+router.get('/download/:filename', async function(req, res){
     var filename = path.basename(req.params.filename + '.wav');
     filename = path.resolve(__dirname + '/../public/audio', filename);
-    console.log(filename);
-    res.download(filename); // Set disposition and send it.
+    if (!fs.existsSync(filename)) {
+      res.sendStatus(404);
+      var message = await models.Message.find({where: {id: req.params.filename}});
+      message.status = 'read';
+      message.save();
+    } else {
+      res.download(filename); // Set disposition and send it.
+    }
 });
 
 module.exports = router;
