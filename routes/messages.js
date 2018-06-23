@@ -22,7 +22,7 @@ router.post('/new', async function(req, res) {
     message = await models.Message.create({
       senderId: user.id,
       recipientId: recipient.id,
-      status: 'waiting',
+      status: 'uploading',
     });
 
     res.json(message);
@@ -32,7 +32,7 @@ router.post('/new', async function(req, res) {
   }
 });
 
-router.post('/upload/:filename', function (req, res) {
+router.post('/upload/:filename', function(req, res) {
     var filename = path.basename(req.params.filename + '.wav');
     filename = path.resolve(__dirname + '/../public/audio', filename);
     var dst = fs.createWriteStream(filename);
@@ -43,10 +43,15 @@ router.post('/upload/:filename', function (req, res) {
       console.log('drain', new Date());
       req.resume();
     });
-    req.on('end', function () {
+    req.on('end', async function () {
       console.log('drain done, yo');
       console.log("\n\n\nDONE UPLOADING\n\n\n");
+
       res.sendStatus(200);
+
+      var message = await models.Message.find({where: {id: req.params.filename}});
+      message.status = 'waiting';
+      message.save();
     });
 });
 
