@@ -38,12 +38,14 @@ router.post('/upload/:filename', function (req, res) {
     var dst = fs.createWriteStream(filename);
     console.log(filename);
     req.pipe(dst);
+    console.log("\n\n\nUPLOADING NOW\n\n\n");
     dst.on('drain', function() {
       console.log('drain', new Date());
       req.resume();
     });
     req.on('end', function () {
       console.log('drain done, yo');
+      console.log("\n\n\nDONE UPLOADING\n\n\n");
       res.sendStatus(200);
     });
 });
@@ -72,9 +74,24 @@ router.get('/download/:filename', async function(req, res){
       message.status = 'read';
       message.save();
     } else {
+      console.log("\n\n\nDOWNLOADING NOW\n\n\n");
       res.download(filename); // Set disposition and send it.
+      console.log("\n\n\nDONE DOWNLOADING\n\n\n");
     }
 });
 
-module.exports = router;
+router.get('/mark-read/:filename', async function(req, res){
+  try {
+    var message = await models.Message.find({where: {id: req.params.filename}});
+    message.status = 'read';
+    message.save();
 
+    res.send(200);
+  } catch(e) {
+    console.error(e);
+    res.statusCode = 404;
+    res.send('I\'ve made a terrible mistyachk!');
+  }
+});
+
+module.exports = router;
